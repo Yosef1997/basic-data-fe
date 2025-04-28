@@ -24,7 +24,9 @@ const AddStudentSchema = z.object({
   number: z
     .string()
     .min(10, { message: 'Nomor harus memiliki 10 angka' })
-    .max(10),
+    .max(10)
+    .nonempty('Nomor tidak boleh kosong')
+    .regex(/^\d+$/, 'Nomor harus angka'),
 })
 
 const AddStudent = () => {

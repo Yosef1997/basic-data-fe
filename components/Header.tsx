@@ -7,13 +7,13 @@ interface HeaderInterface {
   title: string
   name?: string
   nrp?: string
+  textColor?: string
   buttonStr: string
   onClick: () => void
 }
 
 const Header: React.FC<HeaderInterface> = ({ ...props }) => {
   const path = usePathname()
-  console.log(path)
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -23,12 +23,20 @@ const Header: React.FC<HeaderInterface> = ({ ...props }) => {
   return (
     <div className='flex items-end justify-between'>
       <div>
-        <div className='text-light-grey text-[32px] font-bold'>
+        <div
+          className={`${
+            props.textColor ? 'text-white' : 'text-light-grey'
+          } text-[32px] font-bold`}
+        >
           {props.title}
         </div>
         {props.name && props.nrp && (
           <div>
-            <p className='text-light-grey text-2xl'>
+            <p
+              className={`${
+                props.textColor ? 'text-white' : 'text-light-grey'
+              } text-2xl`}
+            >
               {props.name} - {props.nrp}
             </p>
           </div>

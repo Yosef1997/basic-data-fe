@@ -5,7 +5,7 @@ import StudentProjects from './_components/StudentProjects'
 
 type Props = {
   params: {
-    studentNrp: string
+    studentsId: string
   }
 }
 
@@ -34,6 +34,6 @@ type Props = {
 // }
 
 const Projects: React.FC<Props> = ({ params }) => {
-  return <StudentProjects studentNrp={params.studentNrp} />
+  return <StudentProjects studentNrp={params.studentsId} />
 }
 export default Projects
