@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 interface HeaderInterface {
   title: string
   name?: string
-  nrp?: string
+  nrp?: number
   textColor?: string
   buttonStr: string
   onClick: () => void

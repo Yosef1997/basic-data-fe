@@ -22,7 +22,9 @@ const StudentsList: React.FC<{ path: string }> = ({ path }) => {
       ) : error || students.length === 0 ? (
         <Empty title='Mahasiswa' />
       ) : (
-        <Table details={students} linkStr='Lihat Proyek' path={path} />
+        <div className='overflow-y-auto'>
+          <Table details={students} linkStr='Lihat Proyek' path={path} />
+        </div>
       )}
     </div>
   )

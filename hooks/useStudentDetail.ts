@@ -1,47 +1,48 @@
 import { response } from '@/types/response'
 import { students } from '@/types/student'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type StudentsHook = {
   response: response
   data: students
 }
 
-type AddStudentReq = {
-  name: string
-  nrp: string
-}
-const useAddStudent = () => {
-  const [newStudents, setnewStudents] = useState<students>()
+const useStudentDetail = (nrp: number) => {
+  const [studentDetail, setStudentDetail] = useState<students>({
+    id: 0,
+    name: '',
+    nrp: Number(''),
+  })
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | unknown>()
 
-  const addStudents = async (req: AddStudentReq) => {
+  const getStudentDetail = async (nrp: number) => {
     setLoading(true)
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_HOSTNAME_API}/${process.env.NEXT_PUBLIC_PREFIX_API}/students/sign-up`,
+        `${process.env.NEXT_PUBLIC_HOSTNAME_API}/${process.env.NEXT_PUBLIC_PREFIX_API}/students/${nrp}`,
         {
-          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(req),
         }
       )
 
       const result: StudentsHook = await response.json()
 
-      setnewStudents(result.data)
+      setStudentDetail(result.data)
       setLoading(false)
-      return result.response.success
     } catch (error) {
       setError(error)
     }
     setLoading(false)
   }
 
-  return { addStudents, newStudents, loading, error }
+  useEffect(() => {
+    getStudentDetail(nrp)
+  }, [nrp])
+
+  return { studentDetail, loading, error }
 }
-export default useAddStudent
+export default useStudentDetail

@@ -15,13 +15,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import useAddStudent from '@/hooks/useAddStudent'
 
 const AddStudentSchema = z.object({
   name: z
     .string()
     .min(2, { message: 'Nama harus memiliki minimal 2 huruf' })
     .max(50),
-  number: z
+  nrp: z
     .string()
     .min(10, { message: 'Nomor harus memiliki 10 angka' })
     .max(10)
@@ -30,17 +31,27 @@ const AddStudentSchema = z.object({
 })
 
 const AddStudent = () => {
+  const { addStudents, loading } = useAddStudent()
   const router = useRouter()
   const form = useForm<z.infer<typeof AddStudentSchema>>({
     resolver: zodResolver(AddStudentSchema),
     defaultValues: {
       name: '',
-      number: '',
+      nrp: '',
     },
   })
 
   const onSubmit = async (values: z.infer<typeof AddStudentSchema>) => {
-    console.log(values)
+    try {
+      const result = await addStudents(values)
+      if (result) {
+        alert('Tambah mahasiswa berhasil')
+      }
+      router.back()
+    } catch (e) {
+      console.log(e)
+      alert(e)
+    }
   }
   return (
     <div className='bg-black/40 fixed inset-0 flex items-center justify-center'>
@@ -81,7 +92,7 @@ const AddStudent = () => {
 
               <FormField
                 control={form.control}
-                name='number'
+                name='nrp'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -95,7 +106,11 @@ const AddStudent = () => {
                 )}
               />
 
-              <Button className='bg-light-blue' type='submit'>
+              <Button
+                disabled={loading}
+                className='bg-light-blue'
+                type='submit'
+              >
                 Input Data
               </Button>
             </form>

@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
 import Empty from './Empty'
 import Header from './Header'
 import Table from './Table'
-import { studentProjects } from '@/types/studentProjects'
-import { projectDetail } from '@/lib/project'
 import { useRouter } from 'next/navigation'
+import useStudentProject from '@/hooks/useStudentProject'
+import SkeletonTable from './SkeletonTable'
+import useStudentDetail from '@/hooks/useStudentDetail'
 
 interface ProjectListInterface {
   studentNrp: string
@@ -19,20 +19,26 @@ const ProjectList: React.FC<ProjectListInterface> = ({
   path,
 }) => {
   const router = useRouter()
-  const [data, setData] = useState<studentProjects>(projectDetail)
+  const { studentDetail } = useStudentDetail(Number(studentNrp))
+  const { studentProjects, loading, error } = useStudentProject(
+    Number(studentNrp)
+  )
+  console.log(studentProjects)
   return (
     <div>
       <Header
         title='Proyek'
         buttonStr='Tambah Proyek'
-        name={data.studentName}
-        nrp={data.studentNrp}
+        name={studentDetail.name}
+        nrp={studentDetail.nrp}
         onClick={() => router.push('/add-project')}
       />
-      {data.projects.length === 0 ? (
+      {loading ? (
+        <SkeletonTable />
+      ) : error || studentProjects.length === 0 ? (
         <Empty title='Proyek' />
       ) : (
-        <Table details={data.projects} linkStr={linkStr} path={path} />
+        <Table details={studentProjects} linkStr={linkStr} path={path} />
       )}
     </div>
   )
