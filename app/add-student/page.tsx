@@ -46,8 +46,8 @@ const AddStudent = () => {
       const result = await addStudents(values)
       if (result) {
         alert('Tambah mahasiswa berhasil')
+        router.back()
       }
-      router.back()
     } catch (e) {
       console.log(e)
       alert(e)
@@ -83,7 +83,7 @@ const AddStudent = () => {
                       Nama<span className='text-red-500'>*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder='Nama proyek' {...field} />
+                      <Input placeholder='Nama mahasiswa' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

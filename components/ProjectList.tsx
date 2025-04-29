@@ -31,7 +31,7 @@ const ProjectList: React.FC<ProjectListInterface> = ({
         buttonStr='Tambah Proyek'
         name={studentDetail.name}
         nrp={studentDetail.nrp}
-        onClick={() => router.push('/add-project')}
+        onClick={() => router.push(`/add-project/${studentNrp}`)}
       />
       {loading ? (
         <SkeletonTable />

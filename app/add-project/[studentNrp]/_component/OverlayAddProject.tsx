@@ -15,6 +15,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import useAddProject from '@/hooks/useAddProject'
+
+type Props = {
+  studentNrp: string
+}
 
 const AddProjectSchema = z.object({
   name: z
@@ -22,8 +27,10 @@ const AddProjectSchema = z.object({
     .min(2, { message: 'Nama proyek harus memiliki minimal 2 huruf' })
     .max(50),
 })
-const AddProject = () => {
+
+const OverlayAddProject: React.FC<Props> = ({ studentNrp }) => {
   const router = useRouter()
+  const { addProject, loading } = useAddProject()
   const form = useForm<z.infer<typeof AddProjectSchema>>({
     resolver: zodResolver(AddProjectSchema),
     defaultValues: {
@@ -32,7 +39,20 @@ const AddProject = () => {
   })
 
   const onSubmit = async (values: z.infer<typeof AddProjectSchema>) => {
-    console.log(values)
+    const request = {
+      projectName: values.name,
+      studentNrp: Number(studentNrp),
+    }
+    try {
+      const result = await addProject(request)
+      if (result) {
+        alert('Tambah proyek berhasil')
+        router.back()
+      }
+    } catch (e) {
+      console.log(e)
+      alert(e)
+    }
   }
   return (
     <div className='bg-black/40 fixed inset-0 flex items-center justify-center'>
@@ -64,14 +84,18 @@ const AddProject = () => {
                       Nama Proyek <span className='text-red-500'>*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder='Nama mahasiswa' {...field} />
+                      <Input placeholder='Nama proyek' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <Button className='bg-light-blue' type='submit'>
+              <Button
+                disabled={loading}
+                className='bg-light-blue'
+                type='submit'
+              >
                 Input Data
               </Button>
             </form>
@@ -81,4 +105,4 @@ const AddProject = () => {
     </div>
   )
 }
-export default AddProject
+export default OverlayAddProject
