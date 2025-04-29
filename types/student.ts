@@ -1,5 +1,5 @@
 export interface students {
   id: number
   name: string
-  nrp: string
+  nrp: number
 }

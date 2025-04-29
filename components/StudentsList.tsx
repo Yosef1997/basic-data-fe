@@ -1,18 +1,15 @@
 'use client'
-import { mahasiswa } from '@/lib/students'
-import { students } from '@/types/student'
-import { useEffect, useState } from 'react'
 import Header from './Header'
 import Empty from './Empty'
 import Table from './Table'
 import { useRouter } from 'next/navigation'
+import useStudent from '@/hooks/useStudent'
+import SkeletonTable from './SkeletonTable'
 
 const StudentsList: React.FC<{ path: string }> = ({ path }) => {
-  const [students, setStudents] = useState<students[]>([])
+  const { students, loading, error } = useStudent()
   const router = useRouter()
-  useEffect(() => {
-    setStudents(mahasiswa)
-  }, [])
+
   return (
     <div>
       <Header
@@ -20,7 +17,9 @@ const StudentsList: React.FC<{ path: string }> = ({ path }) => {
         buttonStr='Tambah Mahasiswa'
         onClick={() => router.push('/add-student')}
       />
-      {students.length === 0 ? (
+      {loading ? (
+        <SkeletonTable />
+      ) : error || students.length === 0 ? (
         <Empty title='Mahasiswa' />
       ) : (
         <Table details={students} linkStr='Lihat Proyek' path={path} />
