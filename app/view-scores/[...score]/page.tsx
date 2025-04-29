@@ -27,41 +27,43 @@ const Score: React.FC<ScoreProps> = ({ params }) => {
       />
 
       <div className='flex flex-1 justify-between'>
-        <div className='p-10 '>
-          {scoreDetail.parameters.map((item) => {
-            return (
-              <div key={item.formName}>
-                <p className='text-light-grey font-bold'>{item.formName}</p>
-                {item.fields?.map((field, index) => {
-                  return (
-                    <div key={index} className='flex flex-col my-4'>
-                      <label className='text-light-grey font-medium'>
-                        {field.name}
-                      </label>
-                      <input
-                        className='border rounded-xs py-2 px-2'
-                        type='text'
-                        disabled
-                        value={field.score}
-                      />
-                    </div>
-                  )
-                })}
+        <div className='p-10'>
+          <div className=' flex gap-x-4'>
+            {scoreDetail.parameters.map((item) => {
+              return (
+                <div key={item.formName}>
+                  <p className='text-light-grey font-bold'>{item.formName}</p>
+                  {item.fields?.map((field, index) => {
+                    return (
+                      <div key={index} className='flex flex-col my-4'>
+                        <label className='text-light-grey font-medium'>
+                          {field.name}
+                        </label>
+                        <input
+                          className='border rounded-xs py-2 px-2'
+                          type='text'
+                          disabled
+                          value={field.score}
+                        />
+                      </div>
+                    )
+                  })}
 
-                <div className='flex flex-col my-4'>
-                  <label className='text-light-blue font-medium'>
-                    Total Kesalahan
-                  </label>
-                  <input
-                    className='border rounded-xs py-2 px-2'
-                    type='text'
-                    disabled
-                    value={item.formTotal}
-                  />
+                  <div className='flex flex-col my-4'>
+                    <label className='text-light-blue font-medium'>
+                      Total Kesalahan
+                    </label>
+                    <input
+                      className='border rounded-xs py-2 px-2'
+                      type='text'
+                      disabled
+                      value={item.formTotal}
+                    />
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
           <div className='w-full gap-1.5 mb-4'>
             <Label>Catatan Penguji</Label>
             <Textarea

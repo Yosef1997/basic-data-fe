@@ -4,9 +4,9 @@ import StudentProjects from './_components/StudentProjects'
 // import { studentProjects } from '@/types/studentProjects'
 
 type Props = {
-  params: {
+  params: Promise<{
     studentsId: string
-  }
+  }>
 }
 
 // interface ProjectsInterface {
@@ -33,7 +33,7 @@ type Props = {
 //   }
 // }
 
-const Projects: React.FC<Props> = ({ params }) => {
-  return <StudentProjects studentNrp={params.studentsId} />
+const Projects: React.FC<Props> = async ({ params }) => {
+  return <StudentProjects studentNrp={(await params).studentsId} />
 }
 export default Projects
