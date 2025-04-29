@@ -1,29 +1,22 @@
-import { project } from '@/types/project'
+import { ProjectEvaluation } from '@/types/AddScore'
 import { useState } from 'react'
 
 type response = {
   statusCode: number
   message: string
   success: boolean
-  data: project
 }
 
-type AddProductReq = {
-  projectName: string
-  studentNrp: number
-}
-
-const useAddProject = () => {
-  const [project, setProject] = useState<project>()
+const useAddScore = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | unknown>()
 
-  const addProject = async (req: AddProductReq) => {
+  const addScore = async (req: ProjectEvaluation) => {
     setLoading(true)
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_HOSTNAME_API}/${process.env.NEXT_PUBLIC_PREFIX_API}/projects`,
+        `${process.env.NEXT_PUBLIC_HOSTNAME_API}/${process.env.NEXT_PUBLIC_PREFIX_API}/scores`,
         {
           method: 'POST',
           headers: {
@@ -35,7 +28,6 @@ const useAddProject = () => {
 
       const result: response = await response.json()
 
-      setProject(result.data)
       setLoading(false)
       return result.success
     } catch (error) {
@@ -44,6 +36,6 @@ const useAddProject = () => {
     setLoading(false)
   }
 
-  return { addProject, project, loading, error }
+  return { addScore, loading, error }
 }
-export default useAddProject
+export default useAddScore

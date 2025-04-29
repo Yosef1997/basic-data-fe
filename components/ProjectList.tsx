@@ -23,7 +23,7 @@ const ProjectList: React.FC<ProjectListInterface> = ({
   const { studentProjects, loading, error } = useStudentProject(
     Number(studentNrp)
   )
-  console.log(studentProjects)
+
   return (
     <div>
       <Header

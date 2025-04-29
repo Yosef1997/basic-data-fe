@@ -11,7 +11,6 @@ interface TableInterface {
 }
 
 const Table: React.FC<TableInterface> = ({ details, linkStr, path }) => {
-  console.log(path)
   return (
     <table className='w-full mt-6'>
       <thead className='mb-[6px]'>
@@ -33,7 +32,12 @@ const Table: React.FC<TableInterface> = ({ details, linkStr, path }) => {
             ) : null}
 
             <td className=' px-2 py-3 text-light-blue font-bold'>
-              <Link href={`${path}/${item.nrp}`}>{linkStr}</Link>
+              {path.includes(`/enter-score/${item.nrp}/project-score`) ||
+              path.includes(`/view-scores/${item.nrp}/score`) ? (
+                <Link href={`${path}/${item.id}`}>{linkStr}</Link>
+              ) : (
+                <Link href={`${path}/${item.nrp}`}>{linkStr}</Link>
+              )}
             </td>
           </tr>
         ))}
